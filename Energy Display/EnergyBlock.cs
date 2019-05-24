@@ -20,52 +20,48 @@ namespace IngameScript
     {
         public class EnergyBlock
         {
-            readonly private Dictionary<int, EnergyProperty> energyProperties;
+            readonly private BlockType blockType;
             readonly private IMyTerminalBlock block;
+            public ulong CurrentInput { get; set; }
+            public ulong RequiredInput { get; set; }
+            public ulong StoredPower { get; set; }
+            public ulong MaxStoredPower { get; set; }
+            public ulong CurrentOutput { get; set; }
+            public ulong MaxOutput { get; set; }
 
-            public EnergyBlock(List<EnergyType> energyTypes, IMyTerminalBlock block)
+            public EnergyBlock(BlockType blockType, IMyTerminalBlock block)
             {
-                energyProperties = new Dictionary<int, EnergyProperty>();
-                foreach (EnergyType energyType in energyTypes)
-                {
-                    energyProperties.Add(energyType.getIndex(), new EnergyProperty(energyType, block));
-                }
+                this.blockType = blockType;
                 this.block = block;
+                CurrentInput = 0;
+                RequiredInput = 0;
+                StoredPower = 0;
+                MaxStoredPower = 0;
+                CurrentOutput = 0;
+                MaxOutput = 0;
             }
 
-            public EnergyBlock(IMyTerminalBlock block)
+            public BlockType getblockType()
             {
-                this.block = block;
-                energyProperties = new Dictionary<int, EnergyProperty>();
-            }
-
-            public void addEnergyProperty(int key, EnergyProperty energyProperty)
-            {
-                energyProperties.Add(key, energyProperty);
-            }
-
-            public ulong getValue(int key)
-            {
-                EnergyProperty property;
-                energyProperties.TryGetValue(key, out property);
-                return property.getValue();
-            }
-
-            public void setValue(int key, ulong value)
-            {
-                EnergyProperty property;
-                energyProperties.TryGetValue(key, out property);
-                property.setValue(value);
-            }
-
-            public List<EnergyProperty> getEnergyPropertis()
-            {
-                return energyProperties.Values.ToList();
+                return blockType;
             }
 
             public IMyTerminalBlock getBlock()
             {
                 return block;
+            }
+
+            public override string ToString()
+            {
+                StringBuilder objectString = new StringBuilder();
+                objectString.Append(blockType.Typ);
+                objectString.Append("=CI:").Append(CurrentInput);
+                objectString.Append("|CI:").Append(RequiredInput);
+                objectString.Append("|CI:").Append(StoredPower);
+                objectString.Append("|CI:").Append(MaxStoredPower);
+                objectString.Append("|CI:").Append(CurrentOutput);
+                objectString.Append("|CI:").Append(MaxOutput);
+                return objectString.ToString();
             }
         }
     }
